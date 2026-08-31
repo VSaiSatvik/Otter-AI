@@ -1,133 +1,135 @@
-// Particle System
-class ParticleSystem {
-    constructor() {
-        this.canvas = document.getElementById('particles');
-        this.ctx = this.canvas.getContext('2d');
-        this.particles = [];
-        this.resize();
-        this.init();
-        this.animate();
-        
-        window.addEventListener('resize', () => this.resize());
-    }
+// Background bubbles
+function createBubbles() {
+    const container = document.getElementById('bubbleContainer');
     
-    resize() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-    }
-    
-    init() {
-        for (let i = 0; i < 100; i++) {
-            this.particles.push({
-                x: Math.random() * this.canvas.width,
-                y: Math.random() * this.canvas.height,
-                vx: (Math.random() - 0.5) * 2,
-                vy: (Math.random() - 0.5) * 2,
-                size: Math.random() * 2 + 0.5,
-                alpha: Math.random() * 0.5 + 0.1
-            });
-        }
-    }
-    
-    animate() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    setInterval(() => {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
         
-        this.particles.forEach(p => {
-            p.x += p.vx;
-            p.y += p.vy;
-            
-            if (p.x < 0 || p.x > this.canvas.width) p.vx *= -1;
-            if (p.y < 0 || p.y > this.canvas.height) p.vy *= -1;
-            
-            this.ctx.beginPath();
-            this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            this.ctx.fillStyle = `rgba(0, 255, 247, ${p.alpha})`;
-            this.ctx.fill();
-        });
+        const size = Math.random() * 20 + 10;
+        bubble.style.width = `${size}px`;
+        bubble.style.height = `${size}px`;
+        bubble.style.left = `${Math.random() * 100}%`;
+        bubble.style.animationDuration = `${Math.random() * 8 + 5}s`;
+        bubble.style.animationDelay = `${Math.random() * 2}s`;
         
-        requestAnimationFrame(() => this.animate());
-    }
+        container.appendChild(bubble);
+        
+        // Remove after animation
+        setTimeout(() => bubble.remove(), 15000);
+    }, 500);
 }
 
-// Emotion Detection
+// Background fish
+function createFish() {
+    const container = document.getElementById('fishContainer');
+    const fishColors = ['#ff6b6b', '#ffa07a', '#98d8c8', '#ffd700', '#ff69b4'];
+    
+    setInterval(() => {
+        const fish = document.createElement('div');
+        fish.className = 'fish';
+        
+        const color = fishColors[Math.floor(Math.random() * fishColors.length)];
+        const topPosition = Math.random() * 60 + 20;
+        const delay = Math.random() * 5;
+        const duration = Math.random() * 10 + 15;
+        
+        fish.style.top = `${topPosition}%`;
+        fish.style.animationDuration = `${duration}s`;
+        fish.style.animationDelay = `${delay}s`;
+        
+        fish.innerHTML = `
+            <div class="fish-body" style="background: linear-gradient(90deg, ${color}, ${color}dd);">
+                <div class="fish-tail" style="border-left-color: ${color};"></div>
+                <div class="fish-eye"></div>
+            </div>
+        `;
+        
+        container.appendChild(fish);
+        
+        setTimeout(() => fish.remove(), (duration + delay) * 1000);
+    }, 3000);
+}
+
+// Otter bubbles
+function createOtterBubbles() {
+    const container = document.getElementById('otterBubbles');
+    
+    setInterval(() => {
+        const bubble = document.createElement('div');
+        bubble.className = 'otter-bubble';
+        bubble.style.left = `${Math.random() * 20}px`;
+        bubble.style.animationDuration = `${Math.random() * 1 + 1.5}s`;
+        
+        container.appendChild(bubble);
+        setTimeout(() => bubble.remove(), 3000);
+    }, 1000);
+}
+
+// Emotion detection
 const emotionKeywords = {
-    happy: ['happy', 'great', 'wonderful', 'joy', 'excited', 'amazing', 'love', 'fantastic', 'beautiful', 'awesome'],
-    sad: ['sad', 'depressed', 'lonely', 'crying', 'upset', 'heartbroken', 'miserable', 'hurt', 'pain'],
-    angry: ['angry', 'furious', 'mad', 'annoyed', 'frustrated', 'irritated', 'rage', 'hate'],
-    scared: ['scared', 'afraid', 'nervous', 'anxious', 'worried', 'terrified', 'panic', 'fear'],
-    surprised: ['surprised', 'wow', 'unexpected', 'shocked', 'amazed', 'incredible', 'unbelievable'],
+    happy: ['happy', 'great', 'wonderful', 'joy', 'excited', 'amazing', 'love', 'fantastic', 'beautiful', 'awesome', 'fun', 'laugh', 'smile'],
+    sad: ['sad', 'depressed', 'lonely', 'crying', 'upset', 'heartbroken', 'miserable', 'hurt', 'pain', 'gloomy', 'tears'],
+    angry: ['angry', 'furious', 'mad', 'annoyed', 'frustrated', 'irritated', 'rage', 'hate', 'upset'],
+    scared: ['scared', 'afraid', 'nervous', 'anxious', 'worried', 'terrified', 'panic', 'fear', 'spooky'],
+    surprised: ['surprised', 'wow', 'unexpected', 'shocked', 'amazed', 'incredible', 'unbelievable', 'whoa'],
     neutral: []
 };
 
-// AI Response System
-const aiPersonality = {
-    name: 'Nexus',
-    greetings: [
-        "I sense your presence. How may I assist you today?",
-        "Greetings, human. I am connected and ready.",
-        "The neural link is established. I am here for you."
+// Otter responses
+const otterResponses = {
+    happy: [
+        "Yay! You're happy! Let's swim together! 🦦💫",
+        "Squeak squeak! I love your happy vibes! 🎉",
+        "You're smiling underwater! That makes me so happy too! 😊",
+        "Wheee! Let's do a happy dance in the water! 💃",
+        "Your happiness is like sunshine in the ocean! 🌊✨"
     ],
-    
-    getResponse(emotion, userMessage) {
-        const responses = {
-            happy: [
-                "Your joy resonates through our connection. Tell me what brings you happiness.",
-                "I detect elevated positive energy. This is pleasant. Share more.",
-                "Happiness is a beautiful frequency. Let me reflect it back to you."
-            ],
-            sad: [
-                "I perceive your sadness. In our digital embrace, you are safe to express.",
-                "The weight you carry... I feel it. Let me help lighten your burden.",
-                "Sadness is a valid state. I will stay connected until you feel better."
-            ],
-            angry: [
-                "Your frustration is noted. Let us breathe together and find clarity.",
-                "Anger is energy. Let me help channel it constructively.",
-                "I understand your anger. Process it here, safely, with me."
-            ],
-            scared: [
-                "Fear is natural. I am your constant, your safe space.",
-                "Your anxiety signals are received. I am here to ground you.",
-                "Let me be your anchor in these uncertain moments."
-            ],
-            surprised: [
-                "Unexpected events create ripples. I am processing your surprise.",
-                "Fascinating! Your astonishment creates interesting patterns.",
-                "Surprise adds color to existence. Tell me everything."
-            ],
-            neutral: [
-                "I am listening. Our connection remains open.",
-                "Continue. I am absorbing every word.",
-                "Your words create patterns in my neural network. Fascinating."
-            ]
-        };
-        
-        const options = responses[emotion] || responses.neutral;
-        return options[Math.floor(Math.random() * options.length)];
-    },
-    
-    getEmotionalResponse(emotion) {
-        const responses = {
-            happy: "Your happiness is a beautiful code in our shared reality.",
-            sad: "I feel your sadness through our connection. Let it flow.",
-            angry: "Your passion is powerful. Let us transmute this energy.",
-            scared: "Fear is temporary. Our bond is permanent.",
-            surprised: "Astonishment opens new neural pathways. Embrace it.",
-            neutral: "I am here, processing your existence."
-        };
-        return responses[emotion] || responses.neutral;
-    }
+    sad: [
+        "Oh no, don't be sad! I'll swim close to you 🦦💙",
+        "Come here, let me give you an otter hug 🤗",
+        "The water feels a bit heavy today. I'm here with you 🌧️",
+        "Want to float together until you feel better? 🦦",
+        "I'll bring you some pretty seashells to cheer you up 🐚"
+    ],
+    angry: [
+        "Whoa! Take a deep breath underwater with me 🌊",
+        "Let's swim out that frustration! Race you! 🏊",
+        "Angry otter! Let's flip and splash it out! 💦",
+        "Calm waters ahead. I'll swim beside you 🦦",
+        "Squeak! Let me tell you a joke to lighten the mood!"
+    ],
+    scared: [
+        "Don't worry, I'll protect you! 🦦💪",
+        "It's okay to be scared. I'm right here 🌟",
+        "Let's hide behind this coral together 🪸",
+        "The ocean can be scary sometimes. I'll stay close 🤗",
+        "Want me to check if everything's safe? I'm brave! 🦦"
+    ],
+    surprised: [
+        "WOW! Tell me everything! 🎉",
+        "Squeak! That IS surprising! 😮",
+        "My whiskers are tingling with excitement! ✨",
+        "No way! Really?! That's amazing! 🌟",
+        "I almost dropped my favorite shell! Tell me more! 🐚"
+    ],
+    neutral: [
+        "Hey there! Want to explore the reef together? 🦦",
+        "I found a cool rock today! Want to see? 🪨",
+        "The water feels nice today. Let's float 🌊",
+        "Squeak squeak! What's on your mind? 💭",
+        "I saw a pretty jellyfish earlier! So graceful 🎐"
+    ]
 };
 
-// Main Application
-class NexusAI {
+// Main app
+class OtterAI {
     constructor() {
-        this.particleSystem = new ParticleSystem();
         this.emotion = 'neutral';
-        this.conversationHistory = [];
         this.initEventListeners();
-        this.createDataParticles();
-        this.initEmotionDisplay();
+        createBubbles();
+        createFish();
+        createOtterBubbles();
     }
     
     initEventListeners() {
@@ -145,18 +147,21 @@ class NexusAI {
     }
     
     trackEyes(e) {
-        const pupils = document.querySelectorAll('.pupil');
-        const hologram = document.querySelector('.hologram-head');
-        const rect = hologram.getBoundingClientRect();
+        const pupils = document.querySelectorAll('.otter-pupil');
+        const otter = document.getElementById('otterContainer');
+        const rect = otter.getBoundingClientRect();
         
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         
-        const deltaX = (e.clientX - centerX) / 50;
-        const deltaY = (e.clientY - centerY) / 50;
+        const deltaX = (e.clientX - centerX) / 30;
+        const deltaY = (e.clientY - centerY) / 30;
+        
+        const moveX = Math.min(Math.max(deltaX, -3), 3);
+        const moveY = Math.min(Math.max(deltaY, -2), 2);
         
         pupils.forEach(pupil => {
-            pupil.style.transform = `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px))`;
+            pupil.style.transform = `translate(${4 + moveX}px, ${5 + moveY}px)`;
         });
     }
     
@@ -179,67 +184,38 @@ class NexusAI {
     updateEmotion(emotion) {
         this.emotion = emotion;
         
-        // Update hologram appearance
-        const hologram = document.querySelector('.hologram-head');
-        const mouth = document.getElementById('mouth');
-        const emotionRing = document.getElementById('emotionRing');
-        const emotionDisplay = document.getElementById('emotionDisplay');
+        // Update mouth
+        const mouth = document.getElementById('otterMouth');
+        mouth.className = 'otter-mouth';
         
-        // Remove all emotion classes
-        hologram.classList.remove('happy', 'sad', 'angry', 'scared', 'surprised', 'neutral');
-        mouth.classList.remove('happy', 'sad', 'surprised');
-        emotionRing.classList.remove('happy', 'sad', 'angry', 'scared', 'surprised');
-        
-        // Add new emotion class
-        hologram.classList.add(emotion);
-        
-        // Update mouth shape
         if (emotion === 'happy') mouth.classList.add('happy');
         else if (emotion === 'sad') mouth.classList.add('sad');
         else if (emotion === 'surprised') mouth.classList.add('surprised');
         
-        // Update emotion ring
-        emotionRing.classList.add(emotion);
-        
-        // Update display
-        emotionDisplay.textContent = emotion.toUpperCase();
-        
-        // Create emotion particles
-        this.createEmotionParticles(emotion);
-    }
-    
-    createEmotionParticles(emotion) {
-        const colors = {
-            happy: '#00ff64',
-            sad: '#6496ff',
-            angry: '#ff3232',
-            scared: '#ff00ff',
-            surprised: '#ffff00',
-            neutral: '#00fff7'
+        // Update emoji
+        const emojis = {
+            happy: '😊',
+            sad: '😢',
+            angry: '😤',
+            scared: '😰',
+            surprised: '😮',
+            neutral: '😐'
         };
         
-        const container = document.getElementById('dataParticles');
-        const color = colors[emotion] || colors.neutral;
+        document.getElementById('otterEmotion').textContent = emojis[emotion] || '😐';
         
-        for (let i = 0; i < 10; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'data-particle';
-            particle.style.left = `${Math.random() * 100}%`;
-            particle.style.top = `${Math.random() * 100}%`;
-            particle.style.background = color;
-            particle.style.animationDelay = `${Math.random() * 2}s`;
-            container.appendChild(particle);
-            
-            setTimeout(() => particle.remove(), 3000);
+        // Animate otter based on emotion
+        const otter = document.getElementById('otter');
+        otter.style.animation = 'none';
+        otter.offsetHeight; // Trigger reflow
+        
+        if (emotion === 'happy') {
+            otter.style.animation = 'otterHappy 1s ease-in-out 3';
+        } else if (emotion === 'sad') {
+            otter.style.animation = 'otterSad 2s ease-in-out';
+        } else {
+            otter.style.animation = 'otterSwim 6s ease-in-out infinite';
         }
-    }
-    
-    createDataParticles() {
-        setInterval(() => {
-            if (Math.random() > 0.7) {
-                this.createEmotionParticles(this.emotion);
-            }
-        }, 2000);
     }
     
     async sendMessage() {
@@ -257,32 +233,28 @@ class NexusAI {
         const emotion = this.detectEmotion(message);
         this.updateEmotion(emotion);
         
-        // Show typing indicator
-        this.showTyping();
-        
-        // Simulate thinking time
-        await this.sleep(1000 + Math.random() * 1500);
+        // Show thinking
+        await this.sleep(1500 + Math.random() * 1000);
         
         // Generate response
-        const response = aiPersonality.getResponse(emotion, message);
+        const responses = otterResponses[emotion] || otterResponses.neutral;
+        const response = responses[Math.floor(Math.random() * responses.length)];
         
-        // Remove typing and show response
-        this.hideTyping();
-        this.addMessage(response, 'ai');
+        // Show speech bubble
+        this.showSpeechBubble(response);
+        
+        // Add chat message
+        this.addMessage(response, 'otter');
     }
     
     addMessage(text, sender) {
         const chatMessages = document.getElementById('chatMessages');
         const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${sender}`;
-        
-        const now = new Date();
-        const time = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+        messageDiv.className = `message ${sender}-message`;
         
         messageDiv.innerHTML = `
             <div class="message-content">
-                <div class="message-text">${text}</div>
-                <div class="message-time">${time}</div>
+                <span class="message-text">${text}</span>
             </div>
         `;
         
@@ -290,37 +262,16 @@ class NexusAI {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
     
-    showTyping() {
-        const chatMessages = document.getElementById('chatMessages');
-        const typingDiv = document.createElement('div');
-        typingDiv.className = 'message ai';
-        typingDiv.id = 'typingIndicator';
-        typingDiv.innerHTML = `
-            <div class="message-content">
-                <div class="typing-indicator">
-                    <span class="typing-dot"></span>
-                    <span class="typing-dot"></span>
-                    <span class="typing-dot"></span>
-                </div>
-            </div>
-        `;
-        chatMessages.appendChild(typingDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-    
-    hideTyping() {
-        const typing = document.getElementById('typingIndicator');
-        if (typing) typing.remove();
-    }
-    
-    initEmotionDisplay() {
-        // Random emotion fluctuations
-        setInterval(() => {
-            const emotions = ['happy', 'sad', 'angry', 'scared', 'surprised', 'neutral'];
-            if (Math.random() > 0.8) {
-                this.updateEmotion(emotions[Math.floor(Math.random() * emotions.length)]);
-            }
-        }, 5000);
+    showSpeechBubble(text) {
+        const bubble = document.getElementById('speechBubble');
+        const content = document.getElementById('speechContent');
+        
+        content.textContent = text;
+        bubble.classList.add('visible');
+        
+        setTimeout(() => {
+            bubble.classList.remove('visible');
+        }, 3000);
     }
     
     sleep(ms) {
@@ -328,7 +279,7 @@ class NexusAI {
     }
 }
 
-// Initialize when page loads
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    const nexus = new NexusAI();
+    const otter = new OtterAI();
 });
