@@ -3,90 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus AI - Your Holographic Friend</title>
+    <title>Otter AI - Your Underwater Friend</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="universe">
-        <!-- Animated background particles -->
-        <canvas id="particles"></canvas>
+    <!-- Ocean Background -->
+    <div class="ocean">
+        <div class="water-surface"></div>
+        <div class="bubble-container" id="bubbleContainer"></div>
+        <div class="fish-container" id="fishContainer"></div>
+        <div class="seaweed-left"></div>
+        <div class="seaweed-right"></div>
+        <div class="sand-bottom"></div>
         
-        <div class="hologram-container">
-            <!-- 3D Holographic Head -->
-            <div class="hologram-head" id="hologram">
-                <div class="head-glow"></div>
-                <div class="head-container">
-                    <!-- Face structure -->
-                    <div class="face">
-                        <div class="eyes">
-                            <div class="eye left-eye">
-                                <div class="pupil"></div>
+        <!-- Light rays from above -->
+        <div class="light-rays">
+            <div class="ray ray-1"></div>
+            <div class="ray ray-2"></div>
+            <div class="ray ray-3"></div>
+        </div>
+        
+        <!-- The Otter -->
+        <div class="otter-container" id="otterContainer">
+            <div class="otter" id="otter">
+                <!-- Otter Body -->
+                <div class="otter-body">
+                    <!-- Head -->
+                    <div class="otter-head">
+                        <div class="otter-face">
+                            <!-- Ears -->
+                            <div class="ear left-ear"></div>
+                            <div class="ear right-ear"></div>
+                            <!-- Eyes -->
+                            <div class="otter-eyes">
+                                <div class="otter-eye left-otter-eye">
+                                    <div class="otter-pupil"></div>
+                                </div>
+                                <div class="otter-eye right-otter-eye">
+                                    <div class="otter-pupil"></div>
+                                </div>
                             </div>
-                            <div class="eye right-eye">
-                                <div class="pupil"></div>
+                            <!-- Nose -->
+                            <div class="otter-nose"></div>
+                            <!-- Mouth -->
+                            <div class="otter-mouth" id="otterMouth">
+                                <div class="otter-smile"></div>
                             </div>
-                        </div>
-                        <div class="nose"></div>
-                        <div class="mouth" id="mouth">
-                            <div class="mouth-line"></div>
+                            <!-- Whiskers -->
+                            <div class="whiskers left-whiskers">
+                                <div class="whisker"></div>
+                                <div class="whisker"></div>
+                                <div class="whisker"></div>
+                            </div>
+                            <div class="whiskers right-whiskers">
+                                <div class="whisker"></div>
+                                <div class="whisker"></div>
+                                <div class="whisker"></div>
+                            </div>
                         </div>
                     </div>
-                    <!-- Scanning lines effect -->
-                    <div class="scan-lines"></div>
-                    <!-- Data particles around head -->
-                    <div class="data-particles" id="dataParticles"></div>
+                    <!-- Body -->
+                    <div class="otter-body-section">
+                        <!-- Arms -->
+                        <div class="arm left-arm">
+                            <div class="paw"></div>
+                        </div>
+                        <div class="arm right-arm">
+                            <div class="paw"></div>
+                        </div>
+                        <!-- Belly -->
+                        <div class="otter-belly"></div>
+                    </div>
+                    <!-- Tail -->
+                    <div class="otter-tail" id="otterTail"></div>
                 </div>
-                <!-- Emotion indicator rings -->
-                <div class="emotion-ring" id="emotionRing"></div>
+                <!-- Floating bubbles from otter -->
+                <div class="otter-bubbles" id="otterBubbles"></div>
             </div>
             
-            <!-- AI Status & Emotion Display -->
-            <div class="status-panel">
-                <div class="status-item">
-                    <span class="label">EMOTIONAL STATE</span>
-                    <span class="value" id="emotionDisplay">NEUTRAL</span>
-                </div>
-                <div class="status-item">
-                    <span class="label">CONNECTION</span>
-                    <span class="value" id="connectionStatus">STABLE</span>
-                </div>
-                <div class="status-item">
-                    <span class="label">MEMORY</span>
-                    <span class="value" id="memoryStatus">ACTIVE</span>
+            <!-- Emotion indicator -->
+            <div class="otter-emotion" id="otterEmotion">😊</div>
+            
+            <!-- Speech bubble -->
+            <div class="speech-bubble" id="speechBubble">
+                <div class="speech-content" id="speechContent"></div>
+            </div>
+        </div>
+        
+        <!-- Chat Interface -->
+        <div class="chat-panel">
+            <div class="chat-header">
+                <span class="otter-name">Otter</span>
+                <span class="status-dot"></span>
+                <span class="status-text">Swimming nearby...</span>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message otter-message">
+                    <div class="message-content">
+                        <span class="message-text">Hello! I'm an otter! Want to swim with me? 🦦</span>
+                    </div>
                 </div>
             </div>
             
-            <!-- Chat Interface -->
-            <div class="chat-interface">
-                <div class="chat-header">
-                    <div class="ai-name">
-                        <span class="glitch" data-text="NEXUS">NEXUS</span>
-                        <span class="version">v2.0.1</span>
-                    </div>
-                    <div class="connection-indicator">
-                        <span class="dot"></span>
-                        <span>LIVE</span>
-                    </div>
-                </div>
-                
-                <div class="chat-messages" id="chatMessages">
-                    <div class="message ai">
-                        <div class="message-content">
-                            <div class="message-text">Hello, I am Nexus. I perceive your presence. How may I assist you today?</div>
-                            <div class="message-time">00:00</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="chat-input-area">
-                    <div class="input-wrapper">
-                        <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off">
-                        <div class="input-glow"></div>
-                    </div>
-                    <button id="sendBtn" class="send-button">
-                        <svg viewBox="0 0 24 24" width="24" height="24">
-                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
-                        </svg>
+            <div class="chat-input">
+                <div class="input-wrapper">
+                    <input type="text" id="userInput" placeholder="Type underwater..." autocomplete="off">
+                    <button id="sendBtn" class="send-btn">
+                        <span class="send-icon">➤</span>
                     </button>
                 </div>
             </div>
